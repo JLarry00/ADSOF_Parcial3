@@ -1,6 +1,6 @@
 package Proxy;
 
-import java.util.*;
+import java.io.*;
 
 public class CuentaProxy implements ICuenta {
     private Cuenta cuenta;
@@ -17,11 +17,12 @@ public class CuentaProxy implements ICuenta {
     public int obtenerDisponible() {
         if (acceso == false) {
             System.out.print("Ingrese la contraseña: ");
-            @SuppressWarnings("resource")
-            Scanner scanner = new Scanner(System.in);
-            String inputPwd = scanner.nextLine();
-            if (inputPwd.equals(this.pwd)) acceso = true;
-            else System.out.println("Contraseña incorrecta.");
+            BufferedReader scanner = new BufferedReader(new InputStreamReader(System.in));
+            try {
+                String inputPwd = scanner.readLine();
+                if (inputPwd.equals(this.pwd)) acceso = true;
+                else System.out.println("Contraseña incorrecta.");
+            } catch (IOException e) { return -1; }
         }
         if (acceso == true) return cuenta.obtenerDisponible();
         return -1;
